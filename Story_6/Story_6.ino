@@ -42,9 +42,7 @@ void moveForward() {
 
 void loop() {
   if (leftcounter < TARGET_DISTANCE) {    
-    moveForward();
-    leftcounter++;    
-    rightcounter++;    
+    moveForward();        
   } else {
     //stop engine
     analogWrite(Left_Enable, 0);
