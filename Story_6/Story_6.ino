@@ -22,8 +22,8 @@ void setup()
   pinMode(Right_Fwd, OUTPUT);
   pinMode(Right_Rev, OUTPUT);
 
-  pinMode(LEFT_FEEDBACK, INPUT_PULLUP);
-  pinMode(RIGHT_FEEDBACK, INPUT_PULLUP);
+  pinMode(LEFT_FEEDBACK, INPUT);
+  pinMode(RIGHT_FEEDBACK, INPUT);
     
   Serial.begin(115200);
   attachInterrupt(digitalPinToInterrupt(LEFT_FEEDBACK), LeftMotorISR, RISING);
@@ -32,10 +32,10 @@ void setup()
 }
 
 void moveForward() {
-  analogWrite(Left_Fwd, 250);
-  analogWrite(Left_Rev, 0);
-  analogWrite(Right_Fwd, 250);
-  analogWrite(Right_Rev, 0);
+  digitalWrite(Left_Fwd, HIGH);
+  digitalWrite(Left_Rev, LOW);
+  digitalWrite(Right_Fwd, HIGH);
+  digitalWrite(Right_Rev, LOW);
   analogWrite(Left_Enable, 250);  
   analogWrite(Right_Enable, 250);          
 }
