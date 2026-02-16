@@ -5,6 +5,8 @@ const int Right_Enable = 9;
 const int Right_Rev = 8;
 const int Right_Fwd = 7;
 
+unsigned long currentTime;
+
 const int RIGHT_FEEDBACK = 2; 
 const int LEFT_FEEDBACK = 3;
 
@@ -22,8 +24,8 @@ void setup()
   pinMode(Right_Fwd, OUTPUT);
   pinMode(Right_Rev, OUTPUT);
 
-  pinMode(LEFT_FEEDBACK, INPUT_PULLUP);
-  pinMode(RIGHT_FEEDBACK, INPUT_PULLUP);
+  pinMode(LEFT_FEEDBACK, INPUT);
+  pinMode(RIGHT_FEEDBACK, INPUT);
     
   Serial.begin(115200);
   attachInterrupt(digitalPinToInterrupt(LEFT_FEEDBACK), LeftMotorISR, RISING);
@@ -31,38 +33,39 @@ void setup()
     
 }
 
+void loop() {
+  
+   int counter=0;
+   for(counter=0; counter<4; counter++)
+   {
+     moveForward();        
+     turnLeft();
+   }
+       
+  for(counter=0; counter<4; counter++)
+   {
+     moveForward();        
+     turnRight();
+   }
+  
+  exit(0);
+}
+
+
 void moveForward() {
   
   unsigned long  initialTime = millis();     
   while(millis()-initialTime < 2000)
   {
-    analogWrite(Left_Fwd, 250);
-    analogWrite(Left_Rev, 0);
-    analogWrite(Right_Fwd, 250);
-    analogWrite(Right_Rev, 0);
+    digitalWrite(Left_Fwd, HIGH);
+    digitalWrite(Left_Rev, LOW);
+    digitalWrite(Right_Fwd, HIGH);
+    digitalWrite(Right_Rev, LOW);
     analogWrite(Left_Enable, 250);  
     analogWrite(Right_Enable, 250);          
   }
 }
 
-void loop() {
-
-   int counter=0;
-   for(counter=0; counter<3; counter++)
-   {
-     moveForward();        
-     turnLeft();
-   }
-  moveForward(); 
-     
-  for(counter=0; counter<3; counter++)
-   {
-     moveForward();        
-     turnRight();
-   }
-  moveForward(); 
-exit(0);
-}
 
 void turnLeft()
 {
@@ -70,14 +73,14 @@ void turnLeft()
   while(millis() - initialTime < 850){  
   
   //left wheel stops  
-    analogWrite(Left_Fwd, 0);
-    analogWrite(Left_Rev, 0);
-    analogWrite(Left_Enable, 0);  
-    
-    //right wheel rotates
-    analogWrite(Right_Fwd, 250);
-    analogWrite(Right_Rev, 0);    
-    analogWrite(Right_Enable, 250);    
+  digitalWrite(Left_Fwd, LOW);
+  digitalWrite(Left_Rev, LOW);
+  analogWrite(Left_Enable, 250);  
+  
+  //right wheel rotates
+  digitalWrite(Right_Fwd, HIGH);
+  digitalWrite(Right_Rev, LOW);    
+  analogWrite(Right_Enable, 250);    
   }
 }
 void turnRight()
@@ -86,14 +89,14 @@ void turnRight()
   while(millis() - initialTime < 850){  
   
   //left wheel rotates  
-    analogWrite(Left_Fwd, 250);
-    analogWrite(Left_Rev, 0);
-    analogWrite(Left_Enable, 250);  
-    
-    //right wheel stops
-    analogWrite(Right_Fwd, 0);
-    analogWrite(Right_Rev, 0);    
-    analogWrite(Right_Enable, 0);    
+  digitalWrite(Left_Fwd, HIGH);
+  digitalWrite(Left_Rev, LOW);
+  analogWrite(Left_Enable, 250);  
+  
+  //right wheel stops
+  digitalWrite(Right_Fwd, LOW);
+  digitalWrite(Right_Rev, LOW);    
+  analogWrite(Right_Enable, 0);    
   }
 }
 
