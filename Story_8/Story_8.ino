@@ -21,10 +21,8 @@ const int ECHO_DOWN = 17;
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
 
 void setup() {
-  Serial.begin(9600);
-    
-  delay(50); 
-  sonar.ping_cm(); 
+  Serial.begin(115200);
+  int distance =sonar.ping_cm(); 
 }
 
 void loop() {
@@ -37,7 +35,8 @@ void loop() {
 
   
   if (distance > 0 && distance < 12) {
-     stopRover(); 
+     stopRover();
+     delay(1000); 
      moveback();
      turnLeft(); //by 90 degrees
      moveforward();
@@ -46,16 +45,16 @@ void loop() {
 
 void stopRover() { 
   Serial.println("OBSTACLE DETECTED: STOPPING!");
+  analogWrite(Left_Enable, 0);  
+  analogWrite(Right_Enable, 0); 
 }
 
 void moveback() { 
-    unsigned long  initialTime = millis();     
-  while(millis()-initialTime < 1000)
   {
-    analogWrite(Left_Fwd, 0);
-    analogWrite(Left_Rev, 250);
-    analogWrite(Right_Fwd, 0);
-    analogWrite(Right_Rev, 250);
+    digitalWrite(Left_Fwd, LOW);
+    digitalWrite(Left_Rev, HIGH);
+    digitalWrite(Right_Fwd, LOW);
+    digitalWrite(Right_Rev, HIGH);
     analogWrite(Left_Enable, 250);  
     analogWrite(Right_Enable, 250);    
   }
@@ -63,31 +62,30 @@ void moveback() {
 
 void turnLeft() { 
   //turn left by 90 degrees
-  unsigned long  initialTime = millis();   
+  unsigned long initialTime = millis();   
   while(millis() - initialTime < 850){  
   
   //left wheel stops  
-    analogWrite(Left_Fwd, 0);
-    analogWrite(Left_Rev, 0);
+    digitalWrite(Left_Fwd, LOW);
+    digitalWrite(Left_Rev, LOW);
     analogWrite(Left_Enable, 0);  
     
     //right wheel rotates
-    analogWrite(Right_Fwd, 250);
-    analogWrite(Right_Rev, 0);    
+    digitalWrite(Right_Fwd, HIGH);
+    digitalWrite(Right_Rev, LOW);    
     analogWrite(Right_Enable, 250);    
   }
 }
-
 
 void moveforward() { 
   //move forward for 2 sconds
   unsigned long  initialTime = millis();     
   while(millis()-initialTime < 2000)
   {
-    analogWrite(Left_Fwd, 250);
-    analogWrite(Left_Rev, 0);
-    analogWrite(Right_Fwd, 250);
-    analogWrite(Right_Rev, 0);
+    digitalWrite(Left_Fwd, HIGH);
+    digitalWrite(Left_Rev, LOW);
+    digitalWrite(Right_Fwd, HIGH);
+    digitalWrite(Right_Rev, LOW);
     analogWrite(Left_Enable, 250);  
     analogWrite(Right_Enable, 250);  
   }
