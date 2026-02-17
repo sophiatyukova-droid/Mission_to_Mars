@@ -19,4 +19,5 @@ Story 8: I didn't find this too difficult as the support was very useful, helpin
 Story 9: I found this quite challenging to code but I understood the theory on how to prevent the robot from falling.
 
 Story 10:
-![Uploading mission_to_mars_poster.png…]()
+<img width="1024" height="1536" alt="mission_to_mars_poster" src="https://github.com/user-attachments/assets/b709d358-9cb9-44a8-ba07-401db726bfdb" />
+
